@@ -121,19 +121,18 @@ void chansrc_set(CHANNEL *c, uint8_t src_id) {
 
 
 
-CHANNEL *channel_new(int service_id, int is_radio, const char *id, const char *name, int eit_mode, const char *source, int channel_index, int lcn, int is_lcn_visible){
+CHANNEL *channel_new(int service_id, int service_type, const char *id, const char *name, int eit_mode, const char *source, int channel_index, int lcn, int is_lcn_visible){
 
     if (channel_index<=0 || channel_index>=256)
     {
-        
 	    LOGf("CONFIG: Error channel_new invalid index %d\n", channel_index);
         return NULL;
     }
     //LOGf("CONFIG: ------------------channel_new() serviceid %d id %s name %s source %s index %d\n", service_id, id, name , source , channel_index);
-    
+
 	CHANNEL *c = calloc(1, sizeof(CHANNEL));
 	c->service_id = service_id;
-	c->radio = is_radio;
+	c->service_type = service_type;
 	c->index = channel_index;
 	c->lcn = lcn;
 	c->lcn_visible = is_lcn_visible;

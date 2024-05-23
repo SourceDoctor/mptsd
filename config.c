@@ -117,7 +117,11 @@ int config_load_channels(CONFIG *conf) {
 		if (!service_id)
 			continue;
 
+        // keep for backware compatibility
 		int is_radio = ini_get_bool(ini, 0, "Channel%d:radio", i);
+
+        int service_type = ini_get_int(ini, is_radio ? 2 : 1, "Channel%d:service_type", i);
+
 		int lcn = ini_get_int(ini, 0, "Channel%d:lcn", i);
 		int is_lcn_visible = ini_get_bool(ini, 0, "Channel%d:lcn_visible", i);
 
@@ -147,7 +151,7 @@ int config_load_channels(CONFIG *conf) {
 				}
 				// Init channel
 				if (channel == NULL) {
-					channel = channel_new(service_id, is_radio, id, name, eit_mode, source, i, lcn, is_lcn_visible);
+                    channel = channel_new(service_id, service_type, id, name, eit_mode, source, i, lcn, is_lcn_visible);
 				} else {
 					chansrc_add(channel, source);
 				}
@@ -227,7 +231,7 @@ int config_load_channels(CONFIG *conf) {
 		if (r->cookie != cookie) {
 			proxy_log(r, "Remove");
 			/* Replace channel reference with real object and instruct free_restreamer to free it */
-			r->channel = channel_new(r->channel->service_id, r->channel->radio, r->channel->id, r->channel->name, r->channel->eit_mode, r->channel->source, r->channel->index, r->channel->lcn, r->channel->lcn_visible);
+            r->channel = channel_new(r->channel->service_id, r->channel->service_type, r->channel->id, r->channel->name, r->channel->eit_mode, r->channel->source, r->channel->index, r->channel->lcn, r->channel->lcn_visible);
 			r->freechannel = 1;
 			r->dienow = 1;
 		}

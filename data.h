@@ -63,7 +63,7 @@ typedef struct {
 	int			base_pid;
 	int			service_id;
 	int			pmt_pid;
-	int			radio;
+	int			service_type;
 	int			lcn;
 	int			lcn_visible;
 	char *		id;
@@ -231,7 +231,7 @@ EPG_ENTRY *	epg_new			(time_t start, int duration, char *encoding, char *event, 
 void		epg_free		(EPG_ENTRY **e);
 int			epg_changed		(EPG_ENTRY *a, EPG_ENTRY *b);
 
-CHANNEL *	channel_new		(int service_id, int is_radio, const char *id, const char *name, int eit_mode, const char *source, int channel_index, int lcn, int is_lcn_visible);
+CHANNEL *	channel_new		(int service_id, int service_type, const char *id, const char *name, int eit_mode, const char *source, int channel_index, int lcn, int is_lcn_visible);
 void		channel_free	(CHANNEL **c);
 void		channel_free_epg(CHANNEL *c);
 

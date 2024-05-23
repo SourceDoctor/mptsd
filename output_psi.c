@@ -74,7 +74,7 @@ static void output_psi_init_nit(CONFIG *conf, OUTPUT *o) {
 				uint32_t srv = 0;
 				srv  = (c->service_id &~ 0x00ff) << 8;
 				srv |= (c->service_id &~ 0xff00) << 8;
-				srv |= c->radio ? 0x02 : 0x01;
+                srv |= (c->service_type &~ 0xff);
 				services[num++] = srv;
 			}
 			list_unlock(conf->channels);
@@ -133,7 +133,7 @@ static void output_psi_init_nit(CONFIG *conf, OUTPUT *o) {
 				uint32_t srv = 0;
 				srv  = (c->service_id &~ 0x00ff) << 8;
 				srv |= (c->service_id &~ 0xff00) << 8;
-				srv |= c->radio ? 0x02 : 0x01;
+                srv |= (c->service_type &~ 0xff);
 				svc_services[num++] = srv;
 		}
 		list_unlock(conf->channels);
@@ -167,7 +167,7 @@ static void output_psi_init_sdt(CONFIG *conf, OUTPUT *o) {
 	list_lock(conf->channels);
 	list_for_each(conf->channels, lc, lctmp) {
 		CHANNEL *c = lc->data;
-		ts_sdt_add_service_descriptor(sdt, c->service_id, c->radio == 0, conf->provider_name, c->name);
+		ts_sdt_add_service_descriptor(sdt, c->service_id, c->service_type, conf->provider_name, c->name);
 	}
 	list_unlock(conf->channels);
 	gettimeofday(&o->sdt_ts, NULL);
